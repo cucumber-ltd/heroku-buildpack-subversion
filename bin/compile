@@ -58,4 +58,4 @@ mkdir -p $build_dir/bin
 cp $cache_dir/svn $build_dir/bin
 cp $cache_dir/svnmucc $build_dir/bin
 
-svn --version | indent
+$build_dir/bin/svn --version | indent
