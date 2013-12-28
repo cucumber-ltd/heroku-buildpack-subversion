@@ -10,7 +10,7 @@ indent() {
 echo "-----> Installing Subversion."
 
 # http://blog.ashodnakashian.com/2012/11/building-subversion-on-ubuntu-12-10/
-wget http://mirror.catn.com/pub/apache/subversion/subversion-1.8.5.tar.bz2
+curl http://mirror.catn.com/pub/apache/subversion/subversion-1.8.5.tar.bz2 -o subversion-1.8.5.tar.bz2
 tar -xjvf subversion-1.8.5.tar.bz2
 cd subversion-1.8.5
 
