@@ -13,7 +13,7 @@ indent() {
 	sed -u 's/^/       /'
 }
 
-if test -f $cache_dir/subversion/bin/svn; then
+if test -f $cache_dir/svn; then
 	echo "-----> Subversion already built"
 else
 	echo "-----> Downloading Subversion $subversion_version"
@@ -49,10 +49,13 @@ else
 
 	echo "-----> Copying svn and svnmucc binaries to cache"
 	mkdir -p $cache_dir/subversion/bin
-	cp subversion/svn/svn $cache_dir/subversion/bin
-	cp subversion/svnmucc/svnmucc $cache_dir/subversion/bin
+	cp subversion/svn/svn $cache_dir
+	cp subversion/svnmucc/svnmucc $cache_dir
 fi
 
-PATH=$PATH:$cache_dir/subversion/bin
+echo "-----> Copying svn binaries to $build_dir/bin"
+mkdir -p $build_dir/bin
+cp $cache_dir/svn $build_dir/bin
+cp $cache_dir/svnmucc $build_dir/bin
 
 svn --version | indent
