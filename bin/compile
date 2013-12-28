@@ -22,11 +22,12 @@ else
 	cp -R $bp_dir/sqlite-amalgamation subversion-$subversion_version
 	cd subversion-$subversion_version
 
-	echo "-----> Installing Subversion Dependencies"
+	echo "-----> Building Subversion Dependencies"
 	./get-deps.sh apr | indent
-	cd apr/; ./buildconf | indent; ./configure | indent; make | indent; cd ..
-	cd apr-util/; ./buildconf | indent; ./configure --with-apr=../apr | indent; make | indent; cd ..
-	cd apr-util/xml/expat/; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
+	cd apr;                ./buildconf    | indent; ./configure | indent; make | indent; cd ..
+	cd apr-util;           ./buildconf    | indent; ./configure --with-apr=../apr | indent; make | indent; cd ..
+	cd apr-util/xml/expat; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
+	cd serf;               ./buildconf    | indent; ./configure | indent; make | indent; cd ..
 	./autogen.sh | indent
 
 	echo "-----> Building Subversion"
@@ -35,11 +36,11 @@ else
 		--without-swig \
 		--without-kwallet \
 		--disable-keychain \
-		--with-serf \
 		-C \
 		--with-sqlite=sqlite-amalgamation/sqlite3.c \
 		--with-apr=apr \
-		--with-apr-util=apr-util | indent
+		--with-apr-util=apr-util \
+		--with-serf=serf | indent
 
 	make subversion/svn/svn subversion/svnmucc/svnmucc | indent
 
