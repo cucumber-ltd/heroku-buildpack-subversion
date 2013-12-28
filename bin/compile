@@ -16,9 +16,9 @@ cd subversion-1.8.5
 
 echo "-----> Installing Subversion Dependencies"
 ./get-deps.sh apr | indent
-cd apr/; ./buildconf | indent; ./configure | indent; cd ..
-cd apr-util/; ./buildconf | indent; cd ..
-cd apr-util/xml/expat/; ./buildconf.sh | indent; cd ../../..
+cd apr/; ./buildconf | indent; ./configure | indent; make | indent; cd ..
+cd apr-util/; ./buildconf | indent; ./configure | indent; make | indent; cd ..
+cd apr-util/xml/expat/; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
 ./autogen.sh | indent
 
 echo "-----> Building Subversion"
@@ -34,7 +34,8 @@ echo "-----> Building Subversion"
 	--disable-javahl \
 	--disable-keychain \
 	-C \
-	--with-apr=apr | indent
+	--with-apr=apr \
+	--with-apr-util=apr-util | indent
 
 make mkdir-init fsmod-lib ramod-lib lib bin | indent
 
