@@ -9,8 +9,20 @@ indent() {
 
 echo "-----> Installing Subversion."
 
-sh -c 'echo "# WANdisco Open Source Repo" >> /etc/apt/sources.list.d/WANdisco.list'
-sh -c 'echo "deb http://opensource.wandisco.com/ubuntu precise svn18" >> /etc/apt/sources.list.d/WANdisco.list'
-wget -q http://opensource.wandisco.com/wandisco-debian.gpg -O- | apt-key add -
-apt-get update -y | indent
-apt-get install -y subversion | indent
+# http://blog.ashodnakashian.com/2012/11/building-subversion-on-ubuntu-12-10/
+wget http://mirror.catn.com/pub/apache/subversion/subversion-1.8.5.tar.bz2
+tar -xjvf subversion-1.8.5.tar.bz2
+cd subversion-1.8.5
+
+./get-deps.sh
+cd apr/; ./buildconf; cd ..
+cd apr-util/; ./buildconf; cd ..
+cd apr-util/xml/expat/; ./buildconf.sh; cd ../../..
+./autogen.sh
+
+./configure --disable-mod-activation --without-gssapi --without-apxs --without-berkeley-db --without-serf --without-swig --without-ctypesgen --without-kwallet --without-gnome-keyring --disable-javahl --disable-keychain -C
+make mkdir-init external-all fsmod-lib ramod-lib lib bin
+
+make check TESTS="`echo subversion/tests/cmdline/{basic_tests.py,merge_tests.py}`"
+
+make install
