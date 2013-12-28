@@ -12,8 +12,9 @@ indent() {
 
 echo "-----> Installing Subversion..."
 
-echo "BUILD_DIR=$BUILD_DIR" || indent
-echo "BUILD_DIR=$CACHE_DIR" || indent
+echo "BUILD_DIR=$BUILD_DIR" | indent
+echo "BUILD_DIR=$CACHE_DIR" | indent
+echo "PWD=`pwd`" | indent
 
 echo "-----> Downloading Subversion"
 curl --location --silent --output subversion-1.8.5.tar.bz2 http://mirror.catn.com/pub/apache/subversion/subversion-1.8.5.tar.bz2
@@ -23,26 +24,23 @@ cd subversion-1.8.5
 echo "-----> Installing Subversion Dependencies"
 ./get-deps.sh apr | indent
 cd apr/; ./buildconf | indent; ./configure | indent; make | indent; cd ..
-cd apr-util/; ./buildconf | indent; ./configure | indent; make | indent; cd ..
+cd apr-util/; ./buildconf | indent; ./configure --with-apr=../apr | indent; make | indent; cd ..
 cd apr-util/xml/expat/; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
 ./autogen.sh | indent
 
 echo "-----> Building Subversion"
 ./configure \
-	--disable-mod-activation \
-	--without-apxs \
-	--without-berkeley-db \
-	--without-serf \
 	--without-swig \
-	--without-ctypesgen \
 	--without-kwallet \
-	--without-gnome-keyring \
-	--disable-javahl \
 	--disable-keychain \
 	-C \
 	--with-apr=apr \
 	--with-apr-util=apr-util | indent
 
-make mkdir-init fsmod-lib ramod-lib lib bin | indent
+make bin | indent
 
-echo "-----> Testing Subversion"
+echo "-----> Testing svn"
+subversion/svn/svn --version | indent
+
+echo "-----> Testing svnmucc"
+subversion/svnmucc/svnmucc --version | indent
