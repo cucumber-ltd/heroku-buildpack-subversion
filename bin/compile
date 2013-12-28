@@ -11,7 +11,7 @@ echo "-----> Installing Subversion..."
 
 echo "-----> Downloading Subversion"
 curl --location --silent --output subversion-1.8.5.tar.bz2 http://mirror.catn.com/pub/apache/subversion/subversion-1.8.5.tar.bz2
-tar -xjvf subversion-1.8.5.tar.bz2
+tar -xjf subversion-1.8.5.tar.bz2
 cd subversion-1.8.5
 
 echo "-----> Installing Subversion Dependencies"
