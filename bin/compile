@@ -34,7 +34,7 @@ echo "-----> Building Subversion"
 	--without-kwallet \
 	--disable-keychain \
 	-C \
-	--with-sqlite=sqlite-amalgamation \
+	--with-sqlite=sqlite-amalgamation/sqlite3.c \
 	--with-apr=apr \
 	--with-apr-util=apr-util | indent
 
