@@ -9,15 +9,11 @@ indent() {
 
 echo "-----> Installing Subversion."
 
-# Needed by ./get-deps.sh
-sudo apt-get install unzip
-
-# http://blog.ashodnakashian.com/2012/11/building-subversion-on-ubuntu-12-10/
-curl http://mirror.catn.com/pub/apache/subversion/subversion-1.8.5.tar.bz2 -o subversion-1.8.5.tar.bz2
+curl --location --silent --output subversion-1.8.5.tar.bz2 http://mirror.catn.com/pub/apache/subversion/subversion-1.8.5.tar.bz2
 tar -xjvf subversion-1.8.5.tar.bz2
 cd subversion-1.8.5
 
-./get-deps.sh
+./get-deps.sh apr
 cd apr/; ./buildconf; cd ..
 cd apr-util/; ./buildconf; cd ..
 cd apr-util/xml/expat/; ./buildconf.sh; cd ../../..
