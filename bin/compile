@@ -13,7 +13,7 @@ indent() {
 	sed -u 's/^/       /'
 }
 
-if test -f $cache_dir/svnx; then
+if test -f $cache_dir/svnXXX; then
 	echo "-----> Subversion already built"
 else
 	echo "-----> Downloading Subversion $subversion_version"
@@ -35,6 +35,7 @@ else
 		--without-swig \
 		--without-kwallet \
 		--disable-keychain \
+		--with-serf \
 		-C \
 		--with-sqlite=sqlite-amalgamation/sqlite3.c \
 		--with-apr=apr \
