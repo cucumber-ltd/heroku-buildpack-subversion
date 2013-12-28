@@ -1,0 +1,5 @@
+#! /bin/sh
+
+# Heroku doesn't have unzip, which is needed by subversion's get-deps.sh script.
+# This is a hack to unzip with `jar`, which does exist on heroku.
+jar xf $2

@@ -22,7 +22,7 @@ tar -xjf subversion-1.8.5.tar.bz2
 cd subversion-1.8.5
 
 echo "-----> Installing Subversion Dependencies"
-./get-deps.sh apr sqlite | indent
+./get-deps.sh | indent
 cd apr/; ./buildconf | indent; ./configure | indent; make | indent; cd ..
 cd apr-util/; ./buildconf | indent; ./configure --with-apr=../apr | indent; make | indent; cd ..
 cd apr-util/xml/expat/; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
