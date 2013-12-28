@@ -1,52 +1,58 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
 
-set -e
+set -e            # fail fast
+set -o pipefail   # don't ignore exit codes when piping output
 
-BUILD_DIR=$1
-CACHE_DIR=$2
-BUILDPACK_DIR=$(cd $(dirname $(dirname $0)); pwd)
+build_dir=$1
+cache_dir=$2
+bp_dir=$(cd $(dirname $0); cd ..; pwd)
+subversion_version=1.8.5
 
 indent() {
-  sed -u 's/^/       /'
+	sed -u 's/^/       /'
 }
 
-echo "-----> Installing Subversion..."
+if test -f $cache_dir/subversion/bin/svn; then
+	echo "-----> Subversion already built"
+else
+	echo "-----> Downloading Subversion $subversion_version"
+	curl --location --silent --output subversion-$subversion_version.tar.bz2 http://mirror.catn.com/pub/apache/subversion/subversion-$subversion_version.tar.bz2
+	tar -xjf subversion-$subversion_version.tar.bz2
+	cp -R $bp_dir/sqlite-amalgamation subversion-$subversion_version
+	cd subversion-$subversion_version
 
-#echo "BUILD_DIR=$BUILD_DIR" | indent
-#ls $BUILD_DIR | indent
-#echo "CACHE_DIR=$CACHE_DIR" | indent
-#ls $CACHE_DIR | indent
-#echo "PWD=`pwd`" | indent
-#ls | indent
+	echo "-----> Installing Subversion Dependencies"
+	./get-deps.sh apr | indent
+	cd apr/; ./buildconf | indent; ./configure | indent; make | indent; cd ..
+	cd apr-util/; ./buildconf | indent; ./configure --with-apr=../apr | indent; make | indent; cd ..
+	cd apr-util/xml/expat/; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
+	./autogen.sh | indent
 
-echo "-----> Downloading Subversion"
-curl --location --silent --output subversion-1.8.5.tar.bz2 http://mirror.catn.com/pub/apache/subversion/subversion-1.8.5.tar.bz2
-tar -xjf subversion-1.8.5.tar.bz2
-cp -R $BUILDPACK_DIR/sqlite-amalgamation subversion-1.8.5
-cd subversion-1.8.5
+	echo "-----> Building Subversion"
+	./configure \
+		--without-swig \
+		--without-kwallet \
+		--disable-keychain \
+		-C \
+		--with-sqlite=sqlite-amalgamation/sqlite3.c \
+		--with-apr=apr \
+		--with-apr-util=apr-util | indent
 
-echo "-----> Installing Subversion Dependencies"
-./get-deps.sh apr | indent
-cd apr/; ./buildconf | indent; ./configure | indent; make | indent; cd ..
-cd apr-util/; ./buildconf | indent; ./configure --with-apr=../apr | indent; make | indent; cd ..
-cd apr-util/xml/expat/; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
-./autogen.sh | indent
+	make subversion/svn/svn subversion/svnmucc/svnmucc | indent
 
-echo "-----> Building Subversion"
-./configure \
-	--without-swig \
-	--without-kwallet \
-	--disable-keychain \
-	-C \
-	--with-sqlite=sqlite-amalgamation/sqlite3.c \
-	--with-apr=apr \
-	--with-apr-util=apr-util | indent
+	echo "-----> Testing svn"
+	subversion/svn/svn --version | indent
 
-make subversion/svn/svn subversion/svnmucc/svnmucc | indent
+	echo "-----> Testing svnmucc"
+	subversion/svnmucc/svnmucc --version | indent
 
-echo "-----> Testing svn"
-subversion/svn/svn --version | indent
+	echo "-----> Copying svn and svnmucc binaries to cache"
+	mkdir -p $cache_dir/subversion/bin
+	cp subversion/svn/svn $cache_dir/subversion/bin
+	cp subversion/svnmucc/svnmucc $cache_dir/subversion/bin
+fi
 
-echo "-----> Testing svnmucc"
-subversion/svnmucc/svnmucc --version | indent
+PATH=$PATH:$cache_dir/subversion/bin
+
+svn --version | indent
