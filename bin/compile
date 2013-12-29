@@ -23,7 +23,7 @@ else
 	cd subversion-$subversion_version
 
 	echo "-----> Building Subversion Dependencies"
-	./get-deps.sh apr | indent
+	./get-deps.sh apr serf | indent
 	cd apr;                ./buildconf    | indent; ./configure | indent; make | indent; cd ..
 	cd apr-util;           ./buildconf    | indent; ./configure --with-apr=../apr | indent; make | indent; cd ..
 	cd apr-util/xml/expat; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
