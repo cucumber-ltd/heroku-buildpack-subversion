@@ -30,7 +30,8 @@ else
 
 	echo "-----> Building Serf"
 	./get-deps.sh serf | indent
-	cd serf; ./buildconf --with-apr=../apr --with-apr-util=../apr-util | indent; ./configure --with-apr=../apr --with-apr-util=../apr-util | indent; make | indent; cd ..
+	mkdir install
+	cd serf; ./buildconf | indent; ./configure --prefix=`pwd`/install --with-apr=../apr --with-apr-util=../apr-util | indent; make install | indent; cd ..
 
 	echo "-----> Building Subversion"
 	./autogen.sh | indent
@@ -43,7 +44,7 @@ else
 		--with-sqlite=sqlite-amalgamation/sqlite3.c \
 		--with-apr=apr \
 		--with-apr-util=apr-util \
-		--with-serf | indent
+		--with-serf=serf/install | indent
 
 	make subversion/svn/svn subversion/svnmucc/svnmucc | indent
 
