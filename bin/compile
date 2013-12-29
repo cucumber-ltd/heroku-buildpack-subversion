@@ -64,6 +64,7 @@ else
 	./autogen.sh | indent
 	./configure \
 	    --disable-shared \
+	    --enable-all-static \
 		--without-swig \
 		--without-kwallet \
 		--disable-keychain \
