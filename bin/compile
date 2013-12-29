@@ -38,7 +38,7 @@ else
 	cd apr-util
 	mkdir install
 	./buildconf | indent
-	./configure --prefix=`pwd`/install --with-apr=../apr/install | indent
+	./configure --prefix=`pwd`/install --with-apr=`pwd`/../apr/install | indent
 	make | indent
 	make install | indent
 	cd ..
@@ -55,7 +55,7 @@ else
 	cd serf
 	mkdir install
 	./buildconf | indent
-	./configure --prefix=`pwd`/install --with-apr=../apr/install --with-apr-util=../apr-util/install | indent
+	./configure --prefix=`pwd`/install --with-apr=`pwd`/../apr/install --with-apr-util=`pwd`/../apr-util/install | indent
 	make | indent
 	make install | indent
 	cd ..
@@ -68,10 +68,10 @@ else
 		--without-kwallet \
 		--disable-keychain \
 		-C \
-		--with-sqlite=sqlite-amalgamation/sqlite3.c \
-		--with-apr=apr/install \
-		--with-apr-util=apr-util/install \
-		--with-serf=serf/install | indent
+		--with-sqlite=`pwd`/sqlite-amalgamation/sqlite3.c \
+		--with-apr=`pwd`/apr/install \
+		--with-apr-util=`pwd`/apr-util/install \
+		--with-serf=`pwd`/serf/install | indent
 
 	make subversion/svn/svn subversion/svnmucc/svnmucc | indent
 
