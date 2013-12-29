@@ -30,7 +30,7 @@ else
 
 	echo "-----> Building Serf"
 	./get-deps.sh serf | indent
-	cd serf; ./buildconf | indent; ./configure --with-apr=../apr --with-apr-util=../apr-util | indent; make | indent; cd ..
+	cd serf; ./buildconf --with-apr=../apr --with-apr-util=../apr-util | indent; ./configure --with-apr=../apr --with-apr-util=../apr-util | indent; make | indent; cd ..
 
 	echo "-----> Building Subversion"
 	./autogen.sh | indent
