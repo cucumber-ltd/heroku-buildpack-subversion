@@ -22,15 +22,6 @@ else
 	cp -R $bp_dir/sqlite-amalgamation subversion-$subversion_version
 	cd subversion-$subversion_version
 
-#	echo "-----> Downloading Unzip"
-#	curl --location --silent --output unzip60.tar.gz http://downloads.sourceforge.net/project/infozip/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz
-#	tar -xzf unzip60.tar.gz
-#	cd unzip60; cp unix/Makefile .; make generic | indent; cd ..
-
-#	echo "-----> Downloading Subversion dependencies"
-#	PATH=unzip60:$PATH ./get-deps.sh | indent
-#	ls -al
-
 	echo "-----> Building APR"
 	./get-deps.sh apr | indent
 	cd apr;  ./buildconf | indent; ./configure | indent; make | indent; cd ..
@@ -52,7 +43,7 @@ else
 		--with-sqlite=sqlite-amalgamation/sqlite3.c \
 		--with-apr=apr \
 		--with-apr-util=apr-util \
-		--with-serf=serf | indent
+		--with-serf | indent
 
 	make subversion/svn/svn subversion/svnmucc/svnmucc | indent
 
