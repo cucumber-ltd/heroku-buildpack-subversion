@@ -31,7 +31,7 @@ else
 	echo "-----> Building Serf"
 	./get-deps.sh serf | indent
 	mkdir serf/install
-	cd serf; ./buildconf | indent; ./configure --prefix=`pwd`/install --with-apr=../apr --with-apr-util=../apr-util | indent; make install | indent; cd ..
+	cd serf; ./buildconf | indent; ./configure --prefix=`pwd`/install --with-apr=../apr --with-apr-util=../apr-util | indent; make | indent ; make install | indent; cd ..
 
 	echo "-----> Building Subversion"
 	./autogen.sh | indent
