@@ -30,7 +30,7 @@ else
 
 	echo "-----> Building Serf"
 	./get-deps.sh serf | indent
-	mkdir install
+	mkdir serf/install
 	cd serf; ./buildconf | indent; ./configure --prefix=`pwd`/install --with-apr=../apr --with-apr-util=../apr-util | indent; make install | indent; cd ..
 
 	echo "-----> Building Subversion"
