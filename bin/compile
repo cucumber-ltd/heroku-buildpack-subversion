@@ -22,16 +22,43 @@ else
 	cp -R $bp_dir/sqlite-amalgamation subversion-$subversion_version
 	cd subversion-$subversion_version
 
-	echo "-----> Building APR"
+	echo "-----> Downloading Subversion Dependencies"
 	./get-deps.sh apr | indent
-	cd apr;  ./buildconf | indent; ./configure | indent; make | indent; cd ..
-	cd apr-util; ./buildconf | indent; ./configure --with-apr=../apr | indent; make | indent; cd ..
-	cd apr-util/xml/expat; ./buildconf.sh | indent; ./configure | indent; make | indent; cd ../../..
+	./get-deps.sh serf | indent
+
+	echo "-----> Building APR"
+	cd apr
+	mkdir install
+	./buildconf | indent
+	./configure --prefix=`pwd`/install | indent
+	make | indent
+	make install | indent
+	cd ..
+
+	cd apr-util
+	mkdir install
+	./buildconf | indent
+	./configure --prefix=`pwd`/install --with-apr=../apr/install | indent
+	make | indent
+	make install | indent
+	cd ..
+
+	cd apr-util/xml/expat
+	mkdir install
+	./buildconf.sh | indent
+	./configure --prefix=`pwd`/install | indent
+	make | indent
+	make install | indent
+	cd ../../..
 
 	echo "-----> Building Serf"
-	./get-deps.sh serf | indent
-	mkdir serf/install
-	cd serf; ./buildconf | indent; ./configure --prefix=`pwd`/install --with-apr=../apr --with-apr-util=../apr-util | indent; make | indent ; make install | indent; cd ..
+	cd serf
+	mkdir install
+	./buildconf | indent
+	./configure --prefix=`pwd`/install --with-apr=../apr/install --with-apr-util=../apr-util/install | indent
+	make | indent
+	make install | indent
+	cd ..
 
 	echo "-----> Building Subversion"
 	./autogen.sh | indent
@@ -42,8 +69,8 @@ else
 		--disable-keychain \
 		-C \
 		--with-sqlite=sqlite-amalgamation/sqlite3.c \
-		--with-apr=apr \
-		--with-apr-util=apr-util \
+		--with-apr=apr/install \
+		--with-apr-util=apr-util/install \
 		--with-serf=serf/install | indent
 
 	make subversion/svn/svn subversion/svnmucc/svnmucc | indent
