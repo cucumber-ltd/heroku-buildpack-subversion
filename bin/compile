@@ -7,7 +7,7 @@ set -o pipefail   # don't ignore exit codes when piping output
 build_dir=$1
 cache_dir=$2
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
-subversion_version=1.8.5
+subversion_version=1.8.8
 
 indent() {
 	sed -u 's/^/       /'
