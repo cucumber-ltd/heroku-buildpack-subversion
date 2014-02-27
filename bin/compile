@@ -17,7 +17,7 @@ if test -f $cache_dir/svn; then
 	echo "-----> Subversion already built"
 else
 	echo "-----> Downloading Subversion $subversion_version"
-	curl --location --silent --output subversion-$subversion_version.tar.bz2 http://mirror.catn.com/pub/apache/subversion/subversion-$subversion_version.tar.bz2
+	curl --location --silent --output subversion-$subversion_version.tar.bz2 http://www.us.apache.org/dist/subversion/subversion-$subversion_version.tar.bz2
 	tar -xjf subversion-$subversion_version.tar.bz2
 	cp -R $bp_dir/sqlite-amalgamation subversion-$subversion_version
 	cd subversion-$subversion_version
