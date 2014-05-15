@@ -7,7 +7,7 @@ set -o pipefail   # don't ignore exit codes when piping output
 build_dir=$1
 cache_dir=$2
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
-subversion_version=1.8.8
+subversion_version=1.8.9
 
 indent() {
 	sed -u 's/^/       /'
@@ -17,7 +17,7 @@ if test -f $cache_dir/svn; then
 	echo "-----> Subversion already built"
 else
 	echo "-----> Downloading Subversion $subversion_version"
-	curl --location --silent --output subversion-$subversion_version.tar.bz2 http://www.us.apache.org/dist/subversion/subversion-$subversion_version.tar.bz2
+	curl --fail --location --silent --output subversion-$subversion_version.tar.bz2 http://archive.apache.org/dist/subversion/subversion-$subversion_version.tar.bz2
 	tar -xjf subversion-$subversion_version.tar.bz2
 	cp -R $bp_dir/sqlite-amalgamation subversion-$subversion_version
 	cd subversion-$subversion_version
