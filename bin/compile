@@ -72,10 +72,10 @@ else
 		--enable-all-static \
 		--without-swig \
 		--without-kwallet \
-		--without-berkeley-db \
-		--disable-bdb6 \
 		--disable-keychain \
 		-C \
+		--without-berkeley-db \
+		--disable-bdb6 \
 		--with-sqlite=`pwd`/sqlite-amalgamation/sqlite3.c \
 		--with-apr=`pwd`/apr/install \
 		--with-apr-util=`pwd`/apr-util/install \
