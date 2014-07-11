@@ -68,18 +68,24 @@ else
 	echo "-----> Building Subversion"
 	./autogen.sh | indent
 	./configure \
+		--disable-bdb6 \
+		--disable-javahl \
+		--disable-keychain \
+		--disable-mod-activation \
 		--disable-shared \
 		--enable-all-static \
-		--without-swig \
-		--without-kwallet \
-		--disable-keychain \
-		-C \
-		--without-berkeley-db \
-		--disable-bdb6 \
 		--with-sqlite=`pwd`/sqlite-amalgamation/sqlite3.c \
 		--with-apr=`pwd`/apr/install \
 		--with-apr-util=`pwd`/apr-util/install \
-		--with-serf=`pwd`/serf/install | indent
+		--with-serf=`pwd`/serf/install \
+		--without-apxs \
+		--without-berkeley-db \
+		--without-ctypesgen \
+		--without-gnome-keyring \
+		--without-gssapi \
+		--without-kwallet \
+		--without-swig \
+		-C | indent
 
 	make subversion/svn/svn subversion/svnmucc/svnmucc | indent
 
