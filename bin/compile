@@ -63,10 +63,11 @@ else
 	echo "-----> Building Subversion"
 	./autogen.sh | indent
 	./configure \
-	    --disable-shared \
-	    --enable-all-static \
+		--disable-shared \
+		--enable-all-static \
 		--without-swig \
 		--without-kwallet \
+		--without-berkeley-db \
 		--disable-keychain \
 		-C \
 		--with-sqlite=`pwd`/sqlite-amalgamation/sqlite3.c \
