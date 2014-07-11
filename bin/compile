@@ -9,6 +9,11 @@ cache_dir=$2
 bp_dir=$(cd $(dirname $0); cd ..; pwd)
 subversion_version=1.8.9
 
+# Disable misc stuff we don't need
+RUBY="none"
+svn_lib_berkeley_db="no"
+svn_have_berkeley_db="no6"
+
 indent() {
 	sed -u 's/^/       /'
 }
@@ -68,6 +73,7 @@ else
 		--without-swig \
 		--without-kwallet \
 		--without-berkeley-db \
+		--disable-bdb6 \
 		--disable-keychain \
 		-C \
 		--with-sqlite=`pwd`/sqlite-amalgamation/sqlite3.c \
