@@ -18,6 +18,8 @@ indent() {
 	sed -u 's/^/       /'
 }
 
+echo "-----> Checking for Subversion in $cache_dir/svn"
+
 if test -f $cache_dir/svn; then
 	echo "-----> Subversion already built"
 else
